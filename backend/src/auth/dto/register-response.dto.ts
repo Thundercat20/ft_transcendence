@@ -1,4 +1,3 @@
-
 export type RegisterResponseDto = {
 	id: string;
 	username: string;
