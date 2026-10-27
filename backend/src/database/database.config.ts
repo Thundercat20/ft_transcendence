@@ -1,5 +1,7 @@
 
 import type { DataSourceOptions } from 'typeorm';
+import { fileURLToPath } from 'node:url';
+import { User } from '../users/entities/user.entity.js';
 
 function requiredEnv(name: string): string {
   const value = process.env[name];
@@ -26,8 +28,13 @@ export function getDatabaseOptions(): DataSourceOptions {
     password: requiredEnv('POSTGRES_PASSWORD'),
     database: requiredEnv('POSTGRES_DB'),
 
-    entities: [],
-    migrations: [],
+	entities: [User],
+
+	migrations: [
+		fileURLToPath(
+			new URL('./migrations/*{.js,.ts}', import.meta.url),
+		),
+	],
 
     synchronize: false,
     migrationsRun: false,
