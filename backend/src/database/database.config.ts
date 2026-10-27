@@ -1,4 +1,3 @@
-
 import type { DataSourceOptions } from 'typeorm';
 import { fileURLToPath } from 'node:url';
 import { User } from '../users/entities/user.entity.js';
