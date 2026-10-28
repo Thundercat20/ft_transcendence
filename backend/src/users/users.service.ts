@@ -47,4 +47,17 @@ export class UsersService {
       throw error;
     }
   }
+  
+  async findByIdentifier(identifier: string): Promise<User | null> {
+    return this.usersRepository.findOne({
+      where: [
+        { username: identifier },
+        { email: identifier },
+      ],
+    });
+  }
+
+  async findById(id: string): Promise<User | null> {
+    return this.usersRepository.findOneBy({ id });
+  }
 }
