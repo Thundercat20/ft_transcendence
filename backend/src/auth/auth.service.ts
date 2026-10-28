@@ -5,6 +5,10 @@ import { UsersService } from '../users/users.service.js';
 import type { RegisterDto } from './dto/register.dto.js';
 import type { RegisterResponseDto } from './dto/register-response.dto.js';
 
+import { UnauthorizedException } from '@nestjs/common';
+import { User } from '../users/entities/user.entity.js';
+import type { LoginDto } from './dto/login.dto.js';
+
 @Injectable()
 export class AuthService {
 	constructor(
@@ -37,4 +41,33 @@ export class AuthService {
 			createdAt: user.createdAt,
 		};
 	}
+
+	
+	async validateCredentials(dto: LoginDto): Promise<User> {
+		const identifier = dto.identifier.trim().toLowerCase();
+
+		const user = await this.usersService.findByIdentifier(
+			identifier,
+		);
+
+		if (!user) {
+			throw new UnauthorizedException(
+			'Invalid credentials',
+			);
+		}
+
+		const passwordMatches = await argon2.verify(
+			user.passwordHash,
+			dto.password,
+		);
+
+		if (!passwordMatches) {
+			throw new UnauthorizedException(
+			'Invalid credentials',
+			);
+		}
+
+		return user;
+	}
+
 }
