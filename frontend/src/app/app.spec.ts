@@ -1,13 +1,30 @@
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { of } from 'rxjs';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { App } from './app';
+import { AuthStateService } from './features/auth/services/auth-state.service';
 
 describe('App', () => {
   beforeEach(async () => {
+    const authStateStub = {
+      user: signal(null),
+      status: signal('anonymous'),
+      refresh: () => {},
+      logout: () => of(undefined),
+    };
+
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter([])],
+      providers: [
+        provideRouter([]),
+        {
+          provide: AuthStateService,
+          useValue: authStateStub,
+        },
+      ],
     }).compileComponents();
   });
 
@@ -17,13 +34,22 @@ describe('App', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should contain a router outlet', () => {
+  it('should display navigation links', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    const routerOutlet = compiled.querySelector('router-outlet');
 
-    expect(routerOutlet).not.toBeNull();
+    const links = Array.from(
+      compiled.querySelectorAll('nav a'),
+    );
+
+    expect(
+      links.some((link) => link.textContent?.includes('Login')),
+    ).toBe(true);
+
+    expect(
+      links.some((link) => link.textContent?.includes('Register')),
+    ).toBe(true);
   });
 });
