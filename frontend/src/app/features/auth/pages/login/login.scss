@@ -1,0 +1,52 @@
+:host {
+  display: block;
+  padding: 2rem 1rem;
+}
+
+.login {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+form {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #999;
+  border-radius: 6px;
+  font: inherit;
+}
+
+input[aria-invalid='true'] {
+  border-color: #b42318;
+}
+
+button {
+  padding: 0.85rem;
+  border: 0;
+  border-radius: 6px;
+  background: #245a75;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #b42318;
+}

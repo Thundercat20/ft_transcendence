@@ -1,1 +1,41 @@
+<header class="site-header">
+  <a class="brand" routerLink="/">
+    Memory Game
+  </a>
+
+  <nav aria-label="Main navigation">
+    @if (auth.status() === 'checking') {
+      <span>Checking session...</span>
+    } @else if (auth.user(); as user) {
+      <span>
+        Hello, {{ user.username }}
+      </span>
+
+      <button
+        type="button"
+        (click)="onLogout()"
+        [disabled]="isLoggingOut()"
+      >
+        {{ isLoggingOut() ? 'Logging out...' : 'Logout' }}
+      </button>
+    } @else {
+      <a routerLink="/login">Login</a>
+      <a routerLink="/register">Register</a>
+    }
+  </nav>
+</header>
+
+@if (auth.status() === 'error') {
+  <p role="status">
+    We couldn't verify your session.
+    Please check your connection.
+  </p>
+}
+
+@if (logoutError()) {
+  <p role="alert">
+    {{ logoutError() }}
+  </p>
+}
+
 <router-outlet />

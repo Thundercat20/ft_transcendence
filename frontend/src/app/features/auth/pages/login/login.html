@@ -1,0 +1,80 @@
+<main class="login">
+  <h1>Log in</h1>
+  <p>Welcome back to Memory Game!</p>
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    novalidate
+  >
+    <div class="field">
+      <label for="identifier">
+        Username or email
+      </label>
+
+      <input
+        id="identifier"
+        type="text"
+        formControlName="identifier"
+        autocomplete="username"
+        maxlength="254"
+        [attr.aria-invalid]="
+          form.controls.identifier.touched &&
+          form.controls.identifier.invalid
+        "
+      />
+
+      @if (
+        form.controls.identifier.touched &&
+        form.controls.identifier.invalid
+      ) {
+        <small class="error">
+          Please enter your username or email.
+        </small>
+      }
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        autocomplete="current-password"
+        maxlength="128"
+        [attr.aria-invalid]="
+          form.controls.password.touched &&
+          form.controls.password.invalid
+        "
+      />
+
+      @if (
+        form.controls.password.touched &&
+        form.controls.password.invalid
+      ) {
+        <small class="error">
+          Please enter your password.
+        </small>
+      }
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="isSubmitting()"
+    >
+      {{ isSubmitting() ? 'Logging in...' : 'Log in' }}
+    </button>
+  </form>
+
+  @if (errorMessage()) {
+    <p class="error" role="alert">
+      {{ errorMessage() }}
+    </p>
+  }
+
+  <p>
+    Don't have an account?
+    <a routerLink="/register">Register</a>
+  </p>
+</main>
